@@ -5,6 +5,21 @@
 
 menu "Misc devices"
 
+config EVONIX_OEM_BYPASS
+	bool "Rodin OEM navigation charge-pause interface"
+	depends on OF && SYSFS && POWER_SUPPLY=y
+	help
+	  Provide the EVONIX bypass control and observed-status attributes on
+	  the battery power supply of MediaTek MT6899 (Rodin) devices. Use the
+	  existing OEM navigation charging policy without input suspension or
+	  replacing the vendor charger modules. Compatible vendor charging
+	  interfaces are required. The battery is not electrically isolated.
+
+	  This driver must be built in. A privileged userspace controller is
+	  responsible for restoring saved selections after reboot.
+
+	  If unsure, say N.
+
 config SENSORS_LIS3LV02D
 	tristate
 	depends on INPUT
