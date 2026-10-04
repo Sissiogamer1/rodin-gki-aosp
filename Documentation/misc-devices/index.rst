@@ -27,6 +27,7 @@ fit into other categories.
    max6875
    oxsemi-tornado
    pci-endpoint-test
+   rodin-oem-bypass
    spear-pcie-gadget
    tps6594-pfsm
    uacce
