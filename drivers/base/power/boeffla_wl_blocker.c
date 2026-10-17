@@ -17,6 +17,9 @@
 /*
  * Change log:
  *
+ * 1.1.1 (17.10.2026)
+ *   - Fix sysfs store to accept wakelock names with spaces
+ *
  * 1.1.0 (01.09.2017)
  *   - By default, the following wakelocks are blocked in an own list
  *     qcom_rx_wakelock, wlan, wlan_wow_wl, wlan_extscan_wl, NETLINK
@@ -87,11 +90,15 @@ static ssize_t wakelock_blocker_store(struct device * dev, struct device_attribu
 	int len = n;
 
 	// check if string is too long to be stored
-	if (len > LENGTH_LIST_WL)
+	if (len >= LENGTH_LIST_WL)
 		return -EINVAL;
 
-	// store user configured wakelock list and rebuild search string
-	sscanf(buf, "%s", list_wl);
+	// strip trailing newline and store list (scanf %s would truncate
+	// wakelock names containing spaces, e.g. "WLAN timeout")
+	if (len > 0 && buf[len - 1] == '\n')
+		len--;
+	memcpy(list_wl, buf, len);
+	list_wl[len] = '\0';
 	build_search_string(list_wl_default, list_wl);
 
 	return n;
@@ -114,11 +121,15 @@ static ssize_t wakelock_blocker_default_store(struct device * dev, struct device
 	int len = n;
 
 	// check if string is too long to be stored
-	if (len > LENGTH_LIST_WL_DEFAULT)
+	if (len >= LENGTH_LIST_WL_DEFAULT)
 		return -EINVAL;
 
-	// store default, predefined wakelock list and rebuild search string
-	sscanf(buf, "%s", list_wl_default);
+	// strip trailing newline and store list (scanf %s would truncate
+	// wakelock names containing spaces, e.g. "WLAN timeout")
+	if (len > 0 && buf[len - 1] == '\n')
+		len--;
+	memcpy(list_wl_default, buf, len);
+	list_wl_default[len] = '\0';
 	build_search_string(list_wl_default, list_wl);
 
 	return n;
