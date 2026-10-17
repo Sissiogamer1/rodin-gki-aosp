@@ -17,6 +17,11 @@
 /*
  * Change log:
  *
+ * 1.2.0 (17.10.2026)
+ *   - Retune default wakelock blocklist for MTK rodin: block
+ *     "WLAN timeout" (measured 22% idle hold time), drop inert
+ *     Qualcomm IPA/rmnet defaults
+ *
  * 1.1.1 (17.10.2026)
  *   - Fix sysfs store to accept wakelock names with spaces
  *
